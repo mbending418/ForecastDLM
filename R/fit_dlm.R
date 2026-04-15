@@ -1,3 +1,18 @@
+#' @title create.fitted.model
+#' @description
+#' fit a DLM model on data with trend and seasonal components
+#' 
+#' @name create.fitted.model
+#' 
+#' @param data the data fit the model with
+#' 
+#' @param trend.order the order of the trend (set to NULL or 0 for no trend)
+#' 
+#' @param seasonal.periods the period of the seasonal components as a list
+#' 
+#' @return returns a "fitted.dlm" object
+#' 
+#' @export
 create.fitted.model <- function(data,
                                 trend.order = NULL,
                                 seasonal.periods= NULL) {
@@ -72,16 +87,29 @@ create.fitted.model <- function(data,
       
       filtered = filtered,
       smoothed = smoothed,
-      resids = resids,
+      resids = resids
     )
     
     class(model) <- "fitted.dlm"
     model
 }
 
-create.fitted.st.model <- function(data) {
+#' @title create.fitted.st.model
+#' @description
+#' fit a DLM model on data with 1st order trend and a single seasonal component
+#' 
+#' @name create.fitted.st.model
+#' 
+#' @param data the data fit the model with
+#' 
+#' @param seasonal.period the period of the seasonal component
+#' 
+#' @return returns a "fitted.dlm" object
+#' 
+#' @export
+create.fitted.st.model <- function(data, seasonal.period) {
   build.fn <- function(parm) {
-    mod <- dlmModPoly(order = 1) + dlmModSeas(frequency = 4)
+    mod <- dlmModPoly(order = 1) + dlmModSeas(seasonal.period)
     V(mod) <- exp(parm[1])
     diag(W(mod))[1:2] <- exp(parm[2:3])
     return(mod)
@@ -108,7 +136,7 @@ create.fitted.st.model <- function(data) {
     
     filtered = filtered,
     smoothed = smoothed,
-    resids = resids,
+    resids = resids
   )
   
   class(model) <- "fitted.dlm"
