@@ -53,7 +53,7 @@ create.fitted.model <- function(data,
       diag(W(mod)) <- W.diag
       return(mod)
     }
-    if (is.null(trend.order)) {
+    if (is.null(trqend.order)) {
       trend.order.number = 0
     } else {
       trend.order.number = trend.order
