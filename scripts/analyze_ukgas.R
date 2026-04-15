@@ -1,7 +1,8 @@
 #run this code if you don't have tsm installed
 #devtools::install_github("KevinKotze/tsm")
-#install.packages("dlm", repos = "https://cran.rstudio.com/", 
-#                 dependencies = TRUE)
+
+#run this code if you don't have ForecastDLM installed
+#devtools::install_github("mbending418/ForecastDLM")
 
 library(ForecastDLM)
 library(dlm)
