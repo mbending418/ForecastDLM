@@ -1,2 +1,2 @@
-# forecast_dlm
+# ForecastDLM
 code for independent study work
