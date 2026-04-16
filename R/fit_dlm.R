@@ -58,7 +58,7 @@ create.fitted.model <- function(data,
     } else {
       trend.order.number = trend.order
     }
-    n.coef = trend.order.number + sum(seasonal.periods) - length(seasonal.periods) - 1
+    n.coef = 1 + trend.order.number + length(seasonal.periods)
     fit <- dlmMLE(data, rep(0, n.coef), build=build.fn, hessian=TRUE)
     
     loglik <- dlmLL(data, create.dlm())
