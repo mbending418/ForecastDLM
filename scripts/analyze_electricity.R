@@ -48,6 +48,7 @@ MSPE.bats = sum(diff.bats^2)/length(diff.bats)
 MAE.bats = sum(abs(diff.bats))/length(diff.bats)
 
 plot(diff.bats)
+plot(bats.predicted, diff.bats)
 
 #FIT TBATS
 
@@ -67,7 +68,7 @@ MSPE.tbats = sum(diff.tbats^2)/length(diff.tbats)
 MAE.tbats = sum(abs(diff.tbats))/length(diff.tbats)
 
 plot(diff.tbats)
-
+plot(tbats.predicted, diff.tbats)
 
 #FIT DLM
 
@@ -80,6 +81,7 @@ diff.dlm = dlm.predicted-demand.test
 MSPE.dlm = sum(diff.dlm^2)/length(diff.dlm)
 MAE.dlm  = sum(abs(diff.dlm))/length(diff.dlm)
 plot(diff.dlm)
+plot(dlm.predicted, diff.dlm)
 
 plot(unlist(dlm.forecast$f))
 
