@@ -36,7 +36,7 @@ bats.fit = bats(demand.train, lambda=FALSE, use.parallel = FALSE, seasonal.perio
 plot(residuals(bats.fit))
 plot(x=bats.fit$fitted.values, y=residuals(bats.fit))
 
-MSPE.bats.train = sum((residuals(bats.fit)^2)/length(residuals(bats.fitth?sy)))
+MSPE.bats.train = sum((residuals(bats.fit)^2)/length(residuals(bats.fit)))
 MAE.bats.train = sum(abs(residuals(bats.fit))/length(residuals(bats.fit)))
 
 bats.forecast = forecast(bats.fit,h=30*24)
