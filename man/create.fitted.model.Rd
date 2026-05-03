@@ -4,12 +4,7 @@
 \alias{create.fitted.model}
 \title{create.fitted.model}
 \usage{
-create.fitted.model(
-  data,
-  trend.order = NULL,
-  seasonal.periods = NULL,
-  predictor = NULL
-)
+create.fitted.model(data, trend.order = NULL, seasonal.periods = NULL)
 }
 \arguments{
 \item{data}{the data fit the model with}
@@ -17,8 +12,6 @@ create.fitted.model(
 \item{trend.order}{the order of the trend (set to NULL or 0 for no trend)}
 
 \item{seasonal.periods}{the period of the seasonal components as a list}
-
-\item{predictor}{an optional linear regression predictor the same length as "data"}
 }
 \value{
 returns a "fitted.dlm" object

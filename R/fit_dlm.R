@@ -74,19 +74,12 @@ dlm.fit.trend.seas <- function(data, seasonal.period, hessian=TRUE) {
 #' 
 #' @param seasonal.periods the period of the seasonal components as a list
 #' 
-#' @param predictor an optional linear regression predictor the same length as "data"
-#' 
 #' @return returns a "fitted.dlm" object
 #' 
 #' @export
 create.fitted.model <- function(data,
                                 trend.order = NULL,
-                                seasonal.periods= NULL,
-                                predictor = NULL) {
-  if (!is.null(predictor) && length(predictor) != length(data)) {
-    stop("length of 'predictor' needs to match length of 'data'")
-  }
-  
+                                seasonal.periods= NULL) {
   create.dlm <- function() {
     if (is.null(trend.order) || trend.order == 0) {
       mod = NULL
@@ -98,13 +91,6 @@ create.fitted.model <- function(data,
         mod = dlmModSeas(s)
       } else {
         mod = mod + dlmModSeas(s)
-      }
-    }
-    if (!is.null(predictor)) {
-      if (is.null(mod)) {
-        mod = dlmModReg(X=predictor, addInt=FALSE)
-      } else {
-        mod = mod + dlmModReg(X=predictor, addInt=FALSE)
       }
     }
     mod
@@ -123,9 +109,6 @@ create.fitted.model <- function(data,
       W.diag = c(W.diag, exp(param[p.index]), rep(0, s-2))
       p.index = p.index + 1
     }
-    
-    if (!is.null(predictor)) W.diag = c(W.diag, 0)
-    
     mod = create.dlm()
     V(mod) <- exp(param[1])
     diag(W(mod)) <- W.diag
