@@ -17,8 +17,8 @@ data.test  <- ts(lGas[97:length(lGas)], start = c(1984,1), end=c(1986,4), freque
 plot(data.full, col="blue")
 lines(data.train, col="red")
 lines(data.test, col="green")
-legend(x = "topleft", legend=c("all 26 years", "first 20 years (train)", "next 6 years (test)"),
-       fill = c("blue", "red", "green"))
+legend(x = "topleft", legend=c("first 20 years (train)", "next 6 years (test)"),
+       fill = c("red", "green"))
 title("Training/Test Split")
 
 #we want to forecast one month ahead

@@ -27,8 +27,8 @@ data.test = ts(data = demand2016[t.five.months+1:t.six.months],
 plot(data.full, col="blue")
 lines(data.train, col="red")
 lines(data.test, col="green")
-legend(x = "topleft", legend=c("all 6 months", "first 5 months (train)", "month 6 (test)"),
-       fill = c("blue", "red", "green"))
+legend(x = "topleft", legend=c("first 5 months (train)", "month 6 (test)"),
+       fill = c("red", "green"))
 title("Training/Test Split")
 
 #we want to forecast one month ahead
