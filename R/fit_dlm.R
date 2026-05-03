@@ -1,5 +1,67 @@
 library(dlm)
 
+#' @title dlm.get.build.trend.seas
+#' @description
+#' returns a build function that builds a DLM with a trend and a seasonal component
+#' The build function takes in a vector of parameters parm
+#' 
+#' @name dlm.get.build.trend.seas
+#' 
+#' @param data the data to fit the model with
+#' 
+#' @param seasonal.period the period of the seasonal component
+#' 
+#' @return returns a build function that takes in a list of 3 parameters as a list and returns a dlm
+#' 
+#' @export
+dlm.get.build.trend.seas <- function(seasonal.period) {
+  build.fn <- function(parm) {
+    mod <- dlmModPoly(order=1) + dlmModSeas(seasonal.period)
+    V(mod) <- exp(parm[1])
+    diag(W(mod))[1:2] <- exp(parm[2:3])
+    mod
+  }
+  build.fn
+}
+
+#' @title dlm.build.trend.seas
+#' @description
+#' build a DLM with a trend and a seasonal component
+#' 
+#' @name dlm.build.trend.seas
+#'
+#' @param parm a list of three parameters that parameterize the dlm
+#' 
+#' @param seasonal.period the period of the seasonal component
+#' 
+#' @return returns a dlm object
+#' 
+#' @export
+dlm.build.trend.seas <- function(parm, seasonal.period) {
+  build.fn = dlm.get.build.trend.seas(seasonal.period)
+  build.fn(parm)
+}
+
+#' @title dlm.fit.trend.seas
+#' @description
+#' fit a DLM with a trend and seasonal component
+#' 
+#' @name dlm.fit.trend.seas
+#' 
+#' @param data the data to fit the model on
+#' 
+#' @param seasona.period the period of the seasonal component
+#'
+#' @return returns the MLE fit for the DLM
+#' 
+#' @export
+dlm.fit.trend.seas <- function(data, seasonal.period, hessian=TRUE) {
+  dlmMLE(data,
+         rep(0, 3),
+         build=dlm.get.build.trend.seas(seasonal.period),
+         hessian=hessian)
+}
+
 #' @title create.fitted.model
 #' @description
 #' fit a DLM model on data with trend and seasonal components
@@ -91,55 +153,6 @@ create.fitted.model <- function(data,
     mod = fit.mod,
     obs.error.var = V(fit.mod),
     state.error.var = diag(W(fit.mod)),
-    
-    n.coef = n.coef,
-    loglik = loglik,
-    aic = (2 * (loglik)) + 2 * (sum(n.coef)),
-    bic = (2 * (loglik)) + (log(length(data))) * (n.coef),
-    
-    filtered = filtered,
-    smoothed = smoothed,
-    resids = resids
-  )
-  
-  class(model) <- "fitted.dlm"
-  model
-}
-
-#' @title create.fitted.st.model
-#' @description
-#' fit a DLM model on data with 1st order trend and a single seasonal component
-#' 
-#' @name create.fitted.st.model
-#' 
-#' @param data the data fit the model with
-#' 
-#' @param seasonal.period the period of the seasonal component
-#' 
-#' @return returns a "fitted.dlm" object
-#' 
-#' @export
-create.fitted.st.model <- function(data, seasonal.period) {
-  build.fn <- function(parm) {
-    mod <- dlmModPoly(order = 1) + dlmModSeas(seasonal.period)
-    V(mod) <- exp(parm[1])
-    diag(W(mod))[1:2] <- exp(parm[2:3])
-    return(mod)
-  }
-  n.coef = 3
-  fit <- dlmMLE(data, rep(0, n.coef), build=build.fn, hessian=TRUE)
-  loglik <- dlmLL(data, dlmModPoly(1) + dlmModSeas(4))
-  mod <- build.fn(fit$par)
-  
-  filtered <- dlmFilter(data, mod=mod)
-  smoothed <- dlmSmooth(filtered)
-  resids <- residuals(filtered, sd=FALSE)
-  
-  model <- list(
-    data = data,
-    mod = mod,
-    obs.error.var = V(mod),
-    state.error.var = diag(W(mod)),
     
     n.coef = n.coef,
     loglik = loglik,
