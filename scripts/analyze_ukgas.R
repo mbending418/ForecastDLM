@@ -4,6 +4,7 @@
 library(forecast)
 library(dlm)
 library(ForecastDLM)
+library(glue)
 
 #prepare data
 
@@ -110,7 +111,7 @@ legend(x = "topleft", legend=c("test.set", "bats", "tbats", "dlmMLE"),
        fill = c("black", "red", "green", "blue"))
 
 #compare "residuals"
-plot(diff.bats, col="red")
+plot(diff.bats, col="red", ylim=c(-.4, .6))
 lines(diff.tbats, col="green")
 lines(diff.dlm, col="blue")
 legend(x = "topleft", legend=c("bats", "tbats", "dlmMLE"),
@@ -141,10 +142,10 @@ for (i in seq(1,n)) {
 }
 
 table = data.frame(TrainMSE=c(MSE.bats.train,MSE.tbats.train, MSE.dlm.train),
-                   TRAINMAE=c(MAE.bats.train, MAE.tbats.train, MAE.dlm.train),
+                   TrainMAE=c(MAE.bats.train, MAE.tbats.train, MAE.dlm.train),
                    TestMSPE=c(MSPE.bats, MSPE.tbats, MSPE.dlm),
                    TestMAE =c( MAE.bats,  MAE.tbats,  MAE.dlm),
-                   #AvgRunTime = c(bats.total/n, tbats.total/n, dlm.total/n),
+                   AvgRunTime = c(bats.total/n, tbats.total/n, dlm.total/n),
                    row.names=c("bats", "tbats", "dlmMLE"))
 
 print(table)
