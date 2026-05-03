@@ -2,6 +2,7 @@
 
 export(create.fitted.model)
 export(dlm.build.trend.seas)
+export(dlm.fit.prealloc)
 export(dlm.fit.trend.seas)
 export(dlm.get.build.trend.seas)
 export(get.bats.results)

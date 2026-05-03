@@ -62,6 +62,32 @@ dlm.fit.trend.seas <- function(data, seasonal.period, hessian=TRUE) {
          hessian=hessian)
 }
 
+#' @title dlm.fit.prealloc
+#' @description
+#' fit a DLM with a trend and seasonal component while preallocating memory for the DLM matricies
+#' 
+#' @name dlm.fit.prealloc
+#' 
+#' @param data the data to fit the model on
+#' 
+#' @param seasona.period the period of the seasonal component
+#'
+#' @return returns the MLE fit for the DLM
+#' 
+#' @export
+dlm.fit.prealloc <- function(data, seasonal.period, hessian=TRUE) {
+  mod <- dlmModPoly(order=1) + dlmModSeas(seasonal.period)
+  build.fn <- function(parm) {
+    V(mod) <- exp(parm[1])
+    diag(W(mod))[1:2] <- exp(parm[2:3])
+    mod
+  }
+  dlmMLE(data,
+         rep(0, 3),
+         build=build.fn,
+         hessian=hessian)
+}
+
 #' @title create.fitted.model
 #' @description
 #' fit a DLM model on data with trend and seasonal components
