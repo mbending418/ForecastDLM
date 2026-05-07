@@ -18,6 +18,7 @@ data.test = ts(data = demand2016[t.five.months+1:t.six.months],
                start=153,
                end=183,
                frequency=24)
+seasonal.period = 24
 
 time.general = 0
 for (i in seq(1,n)) {
