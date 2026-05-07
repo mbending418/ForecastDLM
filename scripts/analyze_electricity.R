@@ -11,29 +11,29 @@ library(glue)
 electricity2016 = read.csv("data/SolarGenAndElectricityDemand2016.csv")
 demand2016 = electricity2016$IT_load_new
 
-t.five.months = 3648
-t.six.months = 4368
-data.full = ts(data=demand2016[1:t.six.months],
+t.four.months = 24*120
+t.five.months = 24*151
+data.full = ts(data=demand2016[1:t.five.months],
                  start=1,
                  frequency=24)
-data.train = ts(data = demand2016[1:t.five.months],
+data.train = ts(data = demand2016[1:t.four.months],
                   start=1, 
                   frequency=24) 
-data.test = ts(data = demand2016[t.five.months+1:t.six.months],
-                 start=153,
-                 end=183,
+data.test = ts(data = demand2016[t.four.months+1:t.five.months],
+                 start=121,
+                 end=152,
                  frequency=24)
 
 #show all the data on one plot to make sure it's the right regions
 plot(data.full, col="blue")
 lines(data.train, col="red")
 lines(data.test, col="green")
-legend(x = "topleft", legend=c("first 5 months (train)", "month 6 (test)"),
+legend(x = "topleft", legend=c("first 4 months (train)", "month 5 (test)"),
        fill = c("red", "green"))
 title("Training/Test Split")
 
 #we want to forecast one month ahead
-nAhead = 30*24
+nAhead = 31*24
 
 #FIT BATS
 
